@@ -1,0 +1,77 @@
+@startuml
+
+title Engine Failure Scenario\n
+
+actor Maintenance
+database "Local\nDatabase" as DB
+actor Operator
+participant "Smart Contract" as SC
+
+'actor "Tier1-Supplier" as T1
+'actor "Tier2-Supplier" as T2
+'actor "Tier3-Supplier" as T3
+actor "Tier0-OEM\nFactory" as OEM0
+'actor "Tier2-OEM" as OEM2
+'actor "Tier3-OEM" as OEM3
+
+activate OEM0
+
+
+
+OEM0 -> OEM0: Manufacture\nventilator
+
+
+database "OEM\nDatabase" as OEMDB
+
+OEM0 -> OEMDB : Complete\nmanufacturing\nrecords
+activate OEMDB
+
+OEM0 -> SC : log ventilator\
+\nserial number\
+\nwith records hash
+note left
+**Solidity Event** __indexed__
+by __serial number__ used
+to log information
+end note
+
+activate SC
+
+
+Maintenance -> DB : Record\
+ ventilator\nmaintenance\
+ \nwith serial number
+
+
+activate DB
+
+activate Maintenance
+
+
+
+... Engine failure ...
+
+Operator -> DB : Fetch\nmaintenance\nrecords
+
+'actor Service
+
+
+
+activate Operator
+DB --> Operator : ventilator\nserial number
+Operator -> OEMDB : Fetch manufacturing\
+\n records
+OEMDB --> Operator : Manufacturing\nrecords
+
+Operator -> Operator : Hash the records
+
+Operator -> SC : Fetch Hash
+SC --> Operator : original Hash
+Operator -> Operator : Compare hashes
+
+deactivate Maintenance
+deactivate DB
+deactivate OEM0
+deactivate SC
+
+@enduml

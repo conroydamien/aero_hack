@@ -1,0 +1,11 @@
+version: '2'
+services:
+    aero_hack-postgresql:
+        image: postgres:9.6.5
+        # volumes:
+        #     - ~/volumes/jhipster/aero_hack/postgresql/:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=aero_hack
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432
